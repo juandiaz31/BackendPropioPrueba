@@ -16,6 +16,7 @@ const main = async () => {
   //   objetivos: ["618dd867b5d7c18797589166", "618de6c675f468d23b196771"],
   // });
   // console.log("Proyecto creado: ", xyz);
+  //PROBANDO SI PUEDO HACER PUSH 
 
   const proyecto = await ProjectModel.find({nombre: "Proyecto 56"})
     .populate("objetivos")
