@@ -1,27 +1,58 @@
 import conectarBD from "./db/db";
 import { UserModel } from "./models/user";
-import { Enum_Rol, Enum_TipoObjetivo } from "./models/enums";
+import {
+  Enum_EstadoUsuario,
+  Enum_Rol,
+  Enum_TipoObjetivo,
+} from "./models/enums";
 import { ProjectModel } from "./models/project";
-import { objectiveModel } from "./models/objetive";
+import { ObjectiveModel } from "./models/objetive";
+
+const crearProyectoConObjetivos = async () => {
+  const usuarioNuevo = await UserModel.create({
+    nombre: "Sebastian",
+    apellido: "Diaz",
+    correo: "jsdiaz@mail.com",
+    identificacion: "1075293490",
+    rol: Enum_Rol.administrador,
+    estado: Enum_EstadoUsuario.autorizado,
+  });
+
+  const proyectoCreado = await ProjectModel.create({
+    nombre: "proyecto tecnirenault",
+    fechaInicio: new Date("2021/11/11"),
+    fechaFin: new Date("2021/12/11"),
+    presupuesto: 150000,
+    lider: usuarioNuevo._id,
+  });
+
+  const objetivoGeneral = await ObjectiveModel.create({
+    descripcion: "Este es el objetivo general",
+    tipo: Enum_TipoObjetivo.general,
+    proyecto: proyectoCreado._id,
+  });
+
+  const objetivoEspecifico = await ObjectiveModel.create({
+    descripcion: "Este es el objetivo especifico",
+    tipo: Enum_TipoObjetivo.especifico,
+    proyecto: proyectoCreado._id,
+  });
+};
 
 const main = async () => {
   await conectarBD();
 
-  // const xyz = await ProjectModel.create({
-  //   nombre: "Prueba proyecto pirobo",
-  //   fechaInicio: new Date(2021 / 4 / 14),
-  //   fechaFin: new Date(2021 / 12 / 14),
-  //   presupuesto: 310000,
-  //   lider: "618de63f17356b27af58388c",
-  //   objetivos: ["618dd867b5d7c18797589166", "618de6c675f468d23b196771"],
-  // });
-  // console.log("Proyecto creado: ", xyz);
-  //PROBANDO SI PUEDO HACER PUSH 
+  const proyecto = await ProjectModel.findOne({ _id: '618e93caaf630505bfa57d31' });
 
-  const proyecto = await ProjectModel.find({nombre: "Proyecto 56"})
-    .populate("objetivos")
-    .populate("lider");
-  console.log("el proyecto es: ", JSON.stringify(proyecto));
+  console.log('el proyecto que encontré fue', proyecto);
+
+  const objetivos = await ObjectiveModel.find({ project: '618e93caaf630505bfa57d31' });
+
+  console.log('los objetivos del proyecto son: ', objetivos);
+
+  const proyectoConObjetivos = {... proyecto, objetivos: objetivos};
+
+  console.log("El proyecto con objetivos: ",proyectoConObjetivos );
 };
 main();
 
