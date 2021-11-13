@@ -8,9 +8,8 @@ import {
 import { ProjectModel } from "./models/project";
 import { ObjectiveModel } from "./models/objetive";
 
-
 //  METODOLOGIA ONE TO MANY #1
-const crearProyectoConObjetivos = async () => {
+const crearProyectoConObjetivos1 = async () => {
   const usuarioNuevo = await UserModel.create({
     nombre: "Sebastian",
     apellido: "Diaz",
@@ -41,24 +40,63 @@ const crearProyectoConObjetivos = async () => {
   });
 };
 
-const consultaProyectoConObjetivos = async () => {
-  const proyecto = await ProjectModel.findOne({ _id: '618e93caaf630505bfa57d31' });
+const consultaProyectoConObjetivos1 = async () => {
+  const proyecto = await ProjectModel.findOne({
+    _id: "618e93caaf630505bfa57d31",
+  });
 
-  console.log('el proyecto que encontré fue', proyecto);
+  console.log("el proyecto que encontré fue", proyecto);
 
-  const objetivos = await ObjectiveModel.find({ project: '618e93caaf630505bfa57d31' });
+  const objetivos = await ObjectiveModel.find({
+    project: "618e93caaf630505bfa57d31",
+  });
 
-  console.log('los objetivos del proyecto son: ', objetivos);
+  console.log("los objetivos del proyecto son: ", objetivos);
 
-  const proyectoConObjetivos = {... proyecto, objetivos: objetivos};
+  const proyectoConObjetivos = { ...proyecto, objetivos: objetivos };
 
-  console.log("El proyecto con objetivos: ",proyectoConObjetivos );
+  console.log("El proyecto con objetivos: ", proyectoConObjetivos);
+};
+
+//METODOLOGIA #2 ONE TO MANY
+const crearProyectoConObjetivos2 = async () => {
+  const usuarioNuevo = await UserModel.create({
+    nombre: "Sebastian",
+    apellido: "Diaz",
+    correo: "jsdiaz@mail.com",
+    identificacion: "1075293490",
+    rol: Enum_Rol.administrador,
+    estado: Enum_EstadoUsuario.autorizado,
+  });
+
+  const objetivoGeneral = await ObjectiveModel.create({
+    descripcion: "Este es el objetivo general",
+    tipo: Enum_TipoObjetivo.general,
+  });
+
+  const objetivoEspecifico = await ObjectiveModel.create({
+    descripcion: "Este es el objetivo especifico",
+    tipo: Enum_TipoObjetivo.especifico,
+  });
+
+  const proyectoCreado = await ProjectModel.create({
+    nombre: "proyecto tecnirenault",
+    fechaInicio: new Date("2021/11/11"),
+    fechaFin: new Date("2021/12/11"),
+    presupuesto: 150000,
+    lider: usuarioNuevo._id,
+    objetivos: [objetivoGeneral._id, objetivoEspecifico._id],
+  });
 };
 
 const main = async () => {
   await conectarBD();
 
-  
+  const proyecto = await ProjectModel.find({
+    _id: "618ea3f05701deb507345d97",
+  }).populate("objetivos");
+
+  console.log("Proyecto encontrado: ", JSON.stringify(proyecto));
 };
 main();
 
