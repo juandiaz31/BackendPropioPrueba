@@ -89,14 +89,58 @@ const crearProyectoConObjetivos2 = async () => {
   });
 };
 
-const main = async () => {
-  await conectarBD();
-
+const consultaProyectoConObjetivos2 = async () => {
   const proyecto = await ProjectModel.find({
     _id: "618ea3f05701deb507345d97",
   }).populate("objetivos");
 
   console.log("Proyecto encontrado: ", JSON.stringify(proyecto));
+};
+
+//METODOLOGIA #3 ONE TO MANY
+const crearProyectoConObjetivos3 = async () => {
+  const usuarioNuevo = await UserModel.create({
+    nombre: "Sebastian",
+    apellido: "Diaz",
+    correo: "jsdiaz@mail.com",
+    identificacion: "1075293490",
+    rol: Enum_Rol.administrador,
+    estado: Enum_EstadoUsuario.autorizado,
+  });
+
+  const proyectoCreado = await ProjectModel.create({
+    nombre: "proyecto tecnirenault",
+    fechaInicio: new Date("2021/11/11"),
+    fechaFin: new Date("2021/12/11"),
+    presupuesto: 150000,
+    lider: usuarioNuevo._id,
+    objetivos: [
+      {
+        descripcion: "Este es el objetivo general del proyecto",
+        tipo: Enum_TipoObjetivo.general,
+      },
+      {
+        descripcion: "Este es el objetivo especifico 1 del proyecto",
+        tipo: Enum_TipoObjetivo.especifico,
+      },
+      {
+        descripcion: "Este es el objetivo especifico 2 del proyecto",
+        tipo: Enum_TipoObjetivo.especifico,
+      },
+    ],
+  });
+};
+
+const consultaProyectoConObjetivos3 = async () => {
+  const proyecto = await ProjectModel.find({
+    id: "61903c9bbe21a1a48ebc0f68",
+  });
+
+  console.log("Proyecto encontrado: ", proyecto);
+};
+
+const main = async () => {
+  await conectarBD();
 };
 main();
 
