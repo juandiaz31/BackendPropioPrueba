@@ -1,11 +1,11 @@
 import conectarBD from "./db/db";
-import { UserModel } from "./models/user";
+import { UserModel } from "./models/usuario/usuario";
 import {
   Enum_EstadoUsuario,
   Enum_Rol,
   Enum_TipoObjetivo,
-} from "./models/enums";
-import { ProjectModel } from "./models/project";
+} from "./models/enums/enums";
+import { ProjectModel } from "./models/proyecto/proyecto";
 import { ObjectiveModel } from "./models/objetive";
 
 //  METODOLOGIA ONE TO MANY #1

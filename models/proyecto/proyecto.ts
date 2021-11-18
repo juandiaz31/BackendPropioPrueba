@@ -3,10 +3,10 @@ import {
   Enum_EstadoProyecto,
   Enum_FaseProyecto,
   Enum_TipoObjetivo,
-} from "./enums";
-import { ObjectiveModel } from "./objetive";
+} from "../enums/enums";
+import { ObjectiveModel } from "../objetive";
 
-import { UserModel } from "./user";
+import { UserModel } from "../usuario/usuario";
 
 //TYPESCRIPT
 interface Proyecto {
