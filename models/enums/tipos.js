@@ -1,5 +1,6 @@
 import { gql } from "apollo-server-express";
 
+//ENUMS DE GRAPHQL
 const tiposEnums = gql`
   enum Enum_EstadoUsuario {
     PENDIENTE
@@ -28,6 +29,12 @@ const tiposEnums = gql`
   enum Enum_TipoObjetivo {
     GENERAL
     ESPECIFICO
+  }
+
+  enum Enum_EstadoInscripcion {
+    ACEPTADO
+    RECHAZADO
+    PENDIENTE
   }
 `;
 

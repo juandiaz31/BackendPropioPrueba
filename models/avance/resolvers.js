@@ -1,6 +1,6 @@
 import { AdvancementModel } from "./avance.js";
 
-const resolverAvance = {
+const resolversAvance = {
   Query: {
     Avances: async (parent, args) => {
       const avances = await AdvancementModel.find()
@@ -32,4 +32,4 @@ const resolverAvance = {
   },
 };
 
-export { resolverAvance };
+export { resolversAvance };
