@@ -11,7 +11,6 @@ import mongoose from "mongoose";
 // }
 const { Schema, model } = mongoose;
 
-
 const userSchema = new Schema({
   correo: {
     type: String,
@@ -23,6 +22,10 @@ const userSchema = new Schema({
       },
       message: "Por favor escribir un correo valido",
     },
+  },
+  password: {
+    type: String,
+    required: true,
   },
   identificacion: {
     type: String,
