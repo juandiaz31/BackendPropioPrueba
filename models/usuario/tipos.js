@@ -11,9 +11,19 @@ const tiposUsuario = gql`
     estado: Enum_EstadoUsuario
   }
 
+  input filtroUsuarios {
+    _id: ID
+    identificacion: String
+    correo: String
+    rol: Enum_Rol
+    estado: Enum_EstadoUsuario
+  } 
+
+
   type Query {
-    Usuarios: [Usuario]
+    Usuarios(filtro:filtroUsuarios): [Usuario]
     Usuario(_id: String!): Usuario
+    Estudiantes: [Usuario]
   }
 
   type Mutation {
