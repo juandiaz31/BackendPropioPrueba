@@ -3,6 +3,7 @@ import { UserModel } from "../usuario/usuario.js";
 import { InscriptionModel } from "./inscripcion.js";
 
 const resolversInscripciones = {
+  //para resolver en la inscripcion la busqueda on demand de proyecyto y estudiante en vez de usar populatec
   Inscripcion: {
     proyecto: async (parent, args, context) => {
       return await ProjectModel.findOne({ _id: parent.proyecto });
