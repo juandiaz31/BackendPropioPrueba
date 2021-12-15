@@ -19,11 +19,20 @@ const resolversProyecto = {
     },
   },
   Query: {
-    Proyectos: async (parent, args) => {
-      const proyectos = await ProjectModel.find()
-        // .populate("lider")
-        // .populate("avances")
-        // .populate("inscripciones");
+    Proyectos: async (parent, args, context) => {
+      if (context.userData) {
+        if (context.userData.rol === "LIDER") {
+          const proyectos = await ProjectModel.find({
+            lider: context.userData._id,
+          });
+          console.log("es lider de:", proyectos);
+          return proyectos;
+        }
+      }
+      const proyectos = await ProjectModel.find();
+      // .populate("lider")
+      // .populate("avances")
+      // .populate("inscripciones");
       return proyectos;
     },
   },
@@ -68,8 +77,7 @@ const resolversProyecto = {
         args.idProyecto,
         {
           $set: {
-            [`objetivos.${args.indexObjetivo}.descripcion`]:
-              args.campos.descripcion,
+            [`objetivos.${args.indexObjetivo}.descripcion`]:args.campos.descripcion,
             [`objetivos.${args.indexObjetivo}.tipo`]: args.campos.tipo,
           },
         },

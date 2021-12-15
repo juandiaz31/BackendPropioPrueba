@@ -5,7 +5,6 @@ const resolversUsuario = {
   Query: {
     Usuarios: async (parent, args) => {
       const usuarios = await UserModel.find({ ...args.filtro });
-
       return usuarios;
     },
     Usuario: async (parent, args) => {
@@ -16,6 +15,10 @@ const resolversUsuario = {
       const estudiantes = await UserModel.find({ rol: "ESTUDIANTE" });
 
       return estudiantes;
+    },
+    PerfilUsuario: async (parent, args) => {
+      const perfil = await UserModel.findOne({ _id: args._id });
+      return perfil;
     },
   },
 
@@ -51,6 +54,17 @@ const resolversUsuario = {
         { new: true }
       );
       return usuarioEditado;
+    },
+
+    editarPerfil: async (parent, args) => {
+      const perfilEditado = await UserModel.findOneAndUpdate(
+        args._id,
+        {
+          ...args.campos,
+        },
+        { new: true }
+      );
+      return perfilEditado;
     },
     eliminarUsuario: async (parent, args) => {
       if (Object.keys(args).includes("_id")) {
