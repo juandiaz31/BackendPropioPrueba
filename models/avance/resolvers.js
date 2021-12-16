@@ -1,9 +1,14 @@
+import { ProjectModel } from "../proyecto/proyecto.js";
 import { AdvancementModel } from "./avance.js";
 
 const resolversAvance = {
   Query: {
     Avances: async (parent, args) => {
-      const avances = await AdvancementModel.find()
+      let filter = {};
+      if (args.project) {
+        filter = { ...args };
+      }
+      const avances = await AdvancementModel.find(filter)
         .populate("proyecto")
         .populate("creadoPor");
       return avances;
@@ -27,6 +32,18 @@ const resolversAvance = {
         proyecto: args.proyecto,
         creadoPor: args.creadoPor,
       });
+
+      const avances = await AdvancementModel.find({
+        proyecto: avanceCreado.proyecto,
+      });
+
+      if (avances.length === 1) {
+        const proyectoModificado = await ProjectModel.findOneAndUpdate(
+          { _id: avanceCreado.proyecto },
+          { fase: "DESARROLLO" }
+        );
+      }
+
       return avanceCreado;
     },
   },

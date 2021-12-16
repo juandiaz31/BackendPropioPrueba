@@ -2,6 +2,7 @@ import { ProjectModel } from "./proyecto.js";
 
 import { InscriptionModel } from "../inscripcion/inscripcion.js";
 import { UserModel } from "../usuario/usuario.js";
+import { AdvancementModel } from "../avance/avance.js";
 
 const resolversProyecto = {
   Proyecto: {
@@ -16,6 +17,11 @@ const resolversProyecto = {
         proyecto: parent._id,
       });
       return inscripciones;
+    },
+    avances: async (parent, args, context) => {
+      const avances = await AdvancementModel.find({ proyecto: parent._id });
+
+      return avances;
     },
   },
   Query: {
@@ -77,7 +83,8 @@ const resolversProyecto = {
         args.idProyecto,
         {
           $set: {
-            [`objetivos.${args.indexObjetivo}.descripcion`]:args.campos.descripcion,
+            [`objetivos.${args.indexObjetivo}.descripcion`]:
+              args.campos.descripcion,
             [`objetivos.${args.indexObjetivo}.tipo`]: args.campos.tipo,
           },
         },

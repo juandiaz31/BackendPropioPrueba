@@ -11,7 +11,7 @@ const tiposAvance = gql`
   }
 
   type Query {
-    Avances: [Avance]
+    Avances(project: String): [Avance]
     filtrarAvance(_id: String!): [Avance]
   }
 
@@ -22,7 +22,6 @@ const tiposAvance = gql`
       proyecto: String!
       creadoPor: String!
     ): Avance
-
   }
 `;
 
