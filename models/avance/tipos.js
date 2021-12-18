@@ -22,6 +22,8 @@ const tiposAvance = gql`
       proyecto: String!
       creadoPor: String!
     ): Avance
+
+    crearObservacion(_id: String!, observacion: String!): Avance
   }
 `;
 

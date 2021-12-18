@@ -3,7 +3,15 @@ import bcrypt from "bcrypt";
 
 const resolversUsuario = {
   Query: {
-    Usuarios: async (parent, args) => {
+    Usuarios: async (parent, args, context) => {
+      if (context.userData) {
+        if (context.userData.rol === "LIDER") {
+          const usuarios = await UserModel.find({
+            rol: "ESTUDIANTE",
+          });
+          return usuarios;
+        }
+      }
       const usuarios = await UserModel.find({ ...args.filtro });
       return usuarios;
     },
@@ -19,6 +27,10 @@ const resolversUsuario = {
     PerfilUsuario: async (parent, args) => {
       const perfil = await UserModel.findOne({ _id: args._id });
       return perfil;
+    },
+    Lideres: async (parent, args) => {
+      const lideres = await UserModel.find({ rol: "LIDER" });
+      return lideres;
     },
   },
 
@@ -57,7 +69,7 @@ const resolversUsuario = {
     },
 
     editarPerfil: async (parent, args) => {
-      const perfilEditado = await UserModel.findOneAndUpdate(
+      const perfilEditado = await UserModel.findByIdAndUpdate(
         args._id,
         {
           ...args.campos,

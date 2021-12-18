@@ -31,7 +31,7 @@ const resolversProyecto = {
           const proyectos = await ProjectModel.find({
             lider: context.userData._id,
           });
-          console.log("es lider de:", proyectos);
+
           return proyectos;
         }
       }
@@ -47,8 +47,6 @@ const resolversProyecto = {
     crearProyecto: async (parent, args) => {
       const proyectoCreado = await ProjectModel.create({
         nombre: args.nombre,
-        fechaInicio: args.fechaInicio,
-        fechaFin: args.fechaFin,
         presupuesto: args.presupuesto,
         lider: args.lider,
         objetivos: args.objetivos,
@@ -57,6 +55,9 @@ const resolversProyecto = {
     },
 
     editarProyecto: async (parent, args) => {
+      if (args.campos.estado === "ACTIVO") {
+        (args.campos.fase = "INICIADO"), (args.campos.fechaInicio = Date.now());
+      }
       const proyectoEditado = await ProjectModel.findByIdAndUpdate(
         args._id,
         { ...args.campos },
@@ -106,6 +107,18 @@ const resolversProyecto = {
         { new: true }
       );
       return eliminarObjetivoProyecto;
+    },
+    editarEstadoProyecto: async (parent, args) => {
+      const estadoProyectoEditado = await ProjectModel.findByIdAndUpdate(
+        args._id,
+        {
+          estado: args.estado,
+          fase: "INICIADO",
+          fechaInicio: Date.now(),
+        },
+        { new: true }
+      );
+      return estadoProyectoEditado;
     },
   },
 };
