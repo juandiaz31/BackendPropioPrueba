@@ -5,7 +5,6 @@ import { UserModel } from "../usuario/usuario.js";
 
 const { Schema, model } = mongoose;
 
-
 // interface Inscription {
 //   estado: Enum_EstadoInscripcion;
 //   fechaIngreso: Date;
@@ -17,7 +16,7 @@ const { Schema, model } = mongoose;
 const inscriptionSchema = new Schema({
   estado: {
     type: String,
-    enum: ["ACEPTADO" , "RECHAZADO" , "PENDIENTE" ,],
+    enum: ["ACEPTADO", "RECHAZADO", "PENDIENTE"],
     default: "PENDIENTE",
     required: true,
   },

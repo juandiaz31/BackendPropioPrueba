@@ -41,6 +41,10 @@ const resolversProyecto = {
       // .populate("inscripciones");
       return proyectos;
     },
+    Proyecto: async (parent, args) => {
+      const proyecto = await ProjectModel.findById({ _id: args._id });
+      return proyecto;
+    },
   },
 
   Mutation: {
@@ -55,14 +59,35 @@ const resolversProyecto = {
     },
 
     editarProyecto: async (parent, args) => {
+      // console.log(" proyecto: ", args);
+      const proy = await ProjectModel.findById({ _id: args._id });
+
+      const inscAprobadas = await InscriptionModel.find({
+        $and: [{ proyecto: args._id }, { estado: "ACEPTADO" }],
+      });
+
       if (args.campos.estado === "ACTIVO") {
-        (args.campos.fase = "INICIADO"), (args.campos.fechaInicio = Date.now());
+        if (proy.fechaInicio === undefined) {
+          (args.campos.fase = "INICIADO"),
+            (args.campos.fechaInicio = Date.now());
+        }
+      } else if (args.campos.estado === "INACTIVO") {
+        const inscripcionModificada = await InscriptionModel.updateMany(
+          {
+            $and: [{ proyecto: args._id }, { estado: "ACEPTADO" }],
+          },
+          { fechaEgreso: Date.now() },
+          { upsert: false }
+        );
+      } else if (args.campos.fase === "TERMINADO") {
+        (args.campos.estado = "INACTIVO"), (args.campos.fechaFin = Date.now());
       }
       const proyectoEditado = await ProjectModel.findByIdAndUpdate(
         args._id,
         { ...args.campos },
         { new: true }
       );
+
       return proyectoEditado;
     },
 

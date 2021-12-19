@@ -18,6 +18,7 @@ const tiposInscripcion = gql`
     crearInscripcion(proyecto: String!, estudiante: String!): Inscripcion
 
     aprobarInscripcion(id: String!): Inscripcion
+    rechazarInscripcion(id: String!): Inscripcion
   }
 `;
 
