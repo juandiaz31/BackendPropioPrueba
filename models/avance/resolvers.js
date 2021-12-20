@@ -15,12 +15,22 @@ const resolversAvance = {
     },
 
     filtrarAvance: async (parent, args) => {
+      console.log("args de filtrar avance", args);
       const avanceFiltrado = await AdvancementModel.find({
         proyecto: args._id,
       })
         .populate("proyecto")
         .populate("creadoPor");
       return avanceFiltrado;
+    },
+    AvancesLiderados: async (parent, args) => {
+      console.log("args de avanceLiderado", args);
+      const avanceLiderado = await AdvancementModel.find({
+        creadoPor: args._id,
+      })
+        .populate("proyecto")
+        .populate("creadoPor");
+      return avanceLiderado;
     },
   },
 
@@ -58,6 +68,14 @@ const resolversAvance = {
       );
 
       return observacion;
+    },
+    editarAvance: async (parent, args) => {
+      const avanceEditado = await AdvancementModel.findByIdAndUpdate(
+        args._id,
+        { descripcion: args.descripcion },
+        { new: true }
+      );
+      return avanceEditado;
     },
   },
 };
