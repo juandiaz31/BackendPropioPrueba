@@ -6,6 +6,10 @@ const tiposAutenticacion = gql`
     error: String
   }
 
+  type Password {
+    password: String!
+  }
+
   type Mutation {
     registro(
       nombre: String!
@@ -20,6 +24,8 @@ const tiposAutenticacion = gql`
     login(correo: String!, password: String!): Token!
 
     refreshToken: Token
+
+    editarPassword(_id: String!, password: String!): Password!
   }
 `;
 

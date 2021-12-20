@@ -27,6 +27,7 @@ const resolversAutenticacion = {
         }),
       };
     },
+
     //Para enviar la informacion al backend y comparar con algun usuario creado
     login: async (parent, args) => {
       const usuarioEncontrado = await UserModel.findOne({
@@ -44,6 +45,16 @@ const resolversAutenticacion = {
           }),
         };
       }
+    },
+    editarPassword: async (parent, args) => {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(args.password, salt);
+
+      const passwordEditada = await UserModel.findByIdAndUpdate(args._id, {
+        password: hashedPassword,
+      });
+
+      return passwordEditada;
     },
 
     refreshToken: async (parent, args, context) => {
