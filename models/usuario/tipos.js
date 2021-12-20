@@ -11,6 +11,10 @@ const tiposUsuario = gql`
     estado: Enum_EstadoUsuario
   }
 
+  type Estado {
+    estado: String!
+  }
+
   input filtroUsuarios {
     _id: ID
     identificacion: String
@@ -32,6 +36,7 @@ const tiposUsuario = gql`
     Estudiantes: [Usuario]
     PerfilUsuario(_id: String!): Usuario
     Lideres: [Usuario]
+    EstadoUsuario(_id: String!): Estado
   }
 
   type Mutation {
@@ -57,6 +62,8 @@ const tiposUsuario = gql`
     editarPerfil(_id: String!, campos: CamposEditarPerfil!): Usuario
 
     eliminarUsuario(_id: String, correo: String): Usuario
+
+    editarEstadoUsuario(_id: String!, estado: Enum_EstadoUsuario!): Usuario
   }
 `;
 

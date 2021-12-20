@@ -32,6 +32,10 @@ const resolversUsuario = {
       const lideres = await UserModel.find({ rol: "LIDER" });
       return lideres;
     },
+    EstadoUsuario: async (parent, args) => {
+      const estadoUsuario = await UserModel.findById({ _id: args._id });
+      return estadoUsuario;
+    },
   },
 
   Mutation: {
@@ -90,6 +94,12 @@ const resolversUsuario = {
         });
         return usuarioEliminado;
       }
+    },
+    editarEstadoUsuario: async (parent, args) => {
+      const estadoUsuario = await UserModel.findByIdAndUpdate(args._id, {
+        estado: args.estado,
+      });
+      return estadoUsuario;
     },
   },
 };
